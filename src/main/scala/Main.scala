@@ -22,12 +22,16 @@ object Main extends IOApp {
         .getOrElseF(NotFound()) // In case the file doesn't exist
   }.orNotFound
 
-  def run(args: List[String]): IO[ExitCode] =
+  def run(args: List[String]): IO[ExitCode] = {
+    // heroku is deploying the app on random port
+    val port = sys.env.getOrElse("PORT", "8080").toInt
+
     BlazeServerBuilder[IO](global)
-      .bindHttp(8080, "localhost")
+      .bindHttp(port, "localhost")
       .withHttpApp(helloWorldService)
       .serve
       .compile
       .drain
       .as(ExitCode.Success)
+  }
 }
