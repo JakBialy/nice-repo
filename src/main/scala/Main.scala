@@ -25,6 +25,7 @@ object Main extends IOApp {
   def run(args: List[String]): IO[ExitCode] = {
     // heroku is deploying the app on random port
     val port = sys.env.getOrElse("PORT", "8080").toInt
+    println(port)
 
     BlazeServerBuilder[IO](global)
       .bindHttp(port, "localhost")
